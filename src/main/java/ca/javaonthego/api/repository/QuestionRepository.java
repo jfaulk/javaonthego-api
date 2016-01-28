@@ -1,5 +1,6 @@
-package ca.javaonthego.api;
+package ca.javaonthego.api.repository;
 
+import ca.javaonthego.api.model.Question;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

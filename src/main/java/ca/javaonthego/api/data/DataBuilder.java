@@ -1,5 +1,6 @@
-package ca.javaonthego.api;
+package ca.javaonthego.api.data;
 
+import ca.javaonthego.api.model.Question;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;

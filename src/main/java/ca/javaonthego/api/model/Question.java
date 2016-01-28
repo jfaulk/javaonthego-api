@@ -1,4 +1,4 @@
-package ca.javaonthego.api;
+package ca.javaonthego.api.model;
 
 import lombok.Getter;
 import lombok.Setter;
