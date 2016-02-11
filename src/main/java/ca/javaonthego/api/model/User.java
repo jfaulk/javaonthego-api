@@ -9,31 +9,34 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * Created by james on 2016-01-25.
+ * Created by james on 2016-02-10.
  */
 @Entity
-public class Question {
-
+public class User {
     @Id
     @Getter
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Getter
-    @Setter
-    private int chapter;
-    @Getter
-    @Setter
-    private String question;
-    @Getter
-    @Setter
-    private String[] answers;
 
-    public Question() {
+    @Getter
+    @Setter
+    private String userName;
+
+    @Getter
+    @Setter
+    private String email;
+
+    @Getter
+    @Setter
+    private String password;
+
+    public User() {
     }
 
-    public Question(String question, int chapter, String[] answers) {
-        this.question = question;
-        this.chapter = chapter;
-        this.answers = answers;
+    public User(String userName, String email, String password) {
+        super();
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
     }
 }

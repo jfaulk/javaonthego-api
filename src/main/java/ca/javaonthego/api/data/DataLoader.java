@@ -1,6 +1,6 @@
 package ca.javaonthego.api.data;
 
-import ca.javaonthego.api.repository.QuestionRepository;
+import ca.javaonthego.api.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -17,11 +17,11 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
     private DataBuilder dataBuilder;
 
     @Autowired
-    private QuestionRepository questionRepository;
+    private UserRepository userRepository;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        dataBuilder.createQuestions().forEach(question -> questionRepository.save(question));
+        dataBuilder.createUsers().forEach(user -> userRepository.save(user));
     }
 
 }

@@ -1,6 +1,6 @@
 package ca.javaonthego.api.data;
 
-import ca.javaonthego.api.model.Question;
+import ca.javaonthego.api.model.User;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -11,14 +11,13 @@ import java.util.List;
  */
 @Component
 public class DataBuilder {
-    public List<Question> createQuestions() {
-        Question question1 = new Question("Question 1", 1, new String[]{"Answer 1", "Answer 2", "Answer3", "Answer4"});
-        Question question2 = new Question("Question 1", 1, new String[]{"Answer 1", "Answer 2", "Answer3", "Answer4"});
-        Question question3 = new Question("Question 1", 1, new String[]{"Answer 1", "Answer 2", "Answer3", "Answer4"});
-        Question question4 = new Question("Question 1", 1, new String[]{"Answer 1", "Answer 2", "Answer3", "Answer4"});
-        Question question5 = new Question("Question 1", 1, new String[]{"Answer 1", "Answer 2", "Answer3", "Answer4"});
-        Question question6 = new Question("Question 1", 1, new String[]{"Answer 1", "Answer 2", "Answer3", "Answer4"});
+    public List<User> createUsers() {
 
-        return Arrays.asList(question1, question2, question3, question4, question5, question6);
+        User user1 = new User("jeremy", "jeremy@test.com", "test");
+        User user2 = new User("jon", "jon@test.com", "test");
+        User user3 = new User("james", "james@test.com", "test");
+        User user4 = new User("ryan", "ryan@test.com", "test");
+
+        return Arrays.asList(user1, user2, user3, user4);
     }
 }
