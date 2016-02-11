@@ -29,6 +29,11 @@ public class UserController {
         return (List<User>) userRepository.findAll();
     }
 
+    @RequestMapping(value = "/api/user/{userName}", method = RequestMethod.GET)
+    public List<User> getUserByUsername(@PathVariable("userName") String userName) {
+        return userRepository.findByUserName(userName);
+    }
+
     @RequestMapping(value = "/api/users", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public User createUser(@RequestBody User user, HttpServletResponse httpResponse, WebRequest request) {

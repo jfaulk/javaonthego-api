@@ -30,6 +30,8 @@ public class User {
     @Setter
     private String password;
 
+    public User() { }
+
     public User(String userName, String email, String password) {
         super();
         this.userName = userName;
