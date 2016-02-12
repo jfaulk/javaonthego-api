@@ -30,6 +30,22 @@ public class User {
     @Setter
     private String password;
 
+    @Getter
+    @Setter
+    private String dateCreated = "01/01/1970";
+
+    @Getter
+    @Setter
+    private int lastChallenge = 0;
+
+    @Getter
+    @Setter
+    private int level = 0;
+
+    @Getter
+    @Setter
+    private boolean[] achievements = {false, false, false, false, false};
+
     public User() { }
 
     public User(String userName, String email, String password) {
