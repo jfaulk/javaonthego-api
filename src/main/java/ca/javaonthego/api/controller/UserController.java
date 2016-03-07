@@ -37,7 +37,7 @@ public class UserController {
      * @return retrieved user
      */
     @RequestMapping(value = "/api/user/{userName}", method = RequestMethod.GET)
-    public List<User> getUserByUsername(@PathVariable("userName") String userName) {
+    public User getUserByUsername(@PathVariable("userName") String userName) {
         return userRepository.findByUserName(userName);
     }
 
@@ -102,5 +102,16 @@ public class UserController {
         }
 
         httpResponse.setStatus(HttpStatus.NO_CONTENT.value());
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    @ResponseBody
+    public boolean checkLogin(@RequestBody User user) {
+        String username = user.getUserName();
+        String password = user.getPassword();
+
+        User toCheck = userRepository.findByUserName(username);
+        return toCheck.getUserName().equals(username) && toCheck.getPassword().equals(password);
     }
 }
