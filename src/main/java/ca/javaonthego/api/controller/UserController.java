@@ -75,23 +75,17 @@ public class UserController {
      * @param userId the customer
      */
     @CrossOrigin
-    @RequestMapping(value = {"/api/users/{userId}"}, method = {RequestMethod.PUT})
-    public void updateUser(@RequestBody User user, @PathVariable("userId") Long userId,
+    @RequestMapping(value = {"/api/users/{userId}"}, method = RequestMethod.PATCH, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public User update(@RequestBody User user, @PathVariable("userId") Long userId,
                            HttpServletResponse httpResponse) {
-
         if (!userRepository.exists(userId)) {
             httpResponse.setStatus(HttpStatus.NOT_FOUND.value());
         } else {
             userRepository.save(user);
-            httpResponse.setStatus(HttpStatus.NO_CONTENT.value());
+            httpResponse.setStatus(HttpStatus.OK.value());
+            return user;
         }
-    }
-
-    @RequestMapping(value = {"/api/user/{userName}"}, method = {RequestMethod.PUT})
-    public void updateUserByUserName(@RequestBody User user, @PathVariable("userName") String userName,
-                                     HttpServletResponse httpResponse) {
-        userRepository.save(user);
-        httpResponse.setStatus(HttpStatus.NO_CONTENT.value());
+        return null;
     }
 
     /**
