@@ -55,7 +55,7 @@ public class UserController {
     /**
      * Create a new user and return in response with HTTP 201
      *
-     * @return created customer
+     * @return created user
      */
     @CrossOrigin
     @RequestMapping(value = "/api/users", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
@@ -72,18 +72,44 @@ public class UserController {
     /**
      * Update user with given user id.
      *
-     * @param userId the customer
+     * @param userName the user to update
      */
     @CrossOrigin
-    @RequestMapping(value = {"/api/users/{userId}"}, method = RequestMethod.PATCH, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    public User update(@RequestBody User user, @PathVariable("userId") Long userId,
+    @RequestMapping(value = {"/api/user/{userName}"}, method = RequestMethod.PATCH, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public User update(@RequestBody User user, @PathVariable("userName") String userName,
                            HttpServletResponse httpResponse) {
-        if (!userRepository.exists(userId)) {
+        if (!userRepository.exists(userRepository.findByUserName(userName).getId())) {
             httpResponse.setStatus(HttpStatus.NOT_FOUND.value());
         } else {
-            userRepository.save(user);
+            User toUpdate = userRepository.findByUserName(userName);
+
+            if (user.getUserName() != null) {
+                toUpdate.setUserName(user.getUserName());
+            }
+
+            if (user.getEmail() != null) {
+                toUpdate.setEmail(user.getEmail());
+            }
+
+            if (user.getPassword() != null) {
+                toUpdate.setPassword(user.getPassword());
+            }
+
+            if (user.getLastChallenge() != null) {
+                toUpdate.setLastChallenge(user.getLastChallenge());
+            }
+
+            if (user.getLevel() != null) {
+                toUpdate.setPassword(user.getPassword());
+            }
+
+            if (user.getAchievements() != null) {
+                toUpdate.setAchievements(user.getAchievements());
+            }
+
+            userRepository.save(toUpdate);
             httpResponse.setStatus(HttpStatus.OK.value());
-            return user;
+            return toUpdate;
         }
         return null;
     }
@@ -112,6 +138,6 @@ public class UserController {
         String password = user.getPassword();
 
         User toCheck = userRepository.findByUserName(username);
-        return toCheck.getUserName().equals(username) && toCheck.getPassword().equals(password);
+        return toCheck.getUserName().equals(username) & toCheck.getPassword().equals(password);
     }
 }

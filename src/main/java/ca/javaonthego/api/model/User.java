@@ -38,13 +38,13 @@ public class User {
     private String dateCreated = creationDate();
     @Getter
     @Setter
-    private int lastChallenge = 0;
+    private Integer lastChallenge = 0;
     @Getter
     @Setter
-    private int level = 0;
+    private Integer level = 0;
     @Getter
     @Setter
-    private boolean[] achievements = {true, true, false, false, false};
+    private Boolean[] achievements = {true, true, false, false, false};
 
     public User() { }
 
