@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User Controller exposes a series of RESTful endpoints
@@ -75,7 +79,7 @@ public class UserController {
      * @param userName the user to update
      */
     @CrossOrigin
-    @RequestMapping(value = {"/api/user/{userName}"}, method = RequestMethod.PATCH, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = {"/api/user/{userName}"}, method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public User update(@RequestBody User user, @PathVariable("userName") String userName,
                            HttpServletResponse httpResponse) {
         if (!userRepository.exists(userRepository.findByUserName(userName).getId())) {
@@ -139,5 +143,19 @@ public class UserController {
 
         User toCheck = userRepository.findByUserName(username);
         return toCheck.getUserName().equals(username) & toCheck.getPassword().equals(password);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/session", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, String> loginUser(Principal principal) {
+        HashMap<String, String> result = new HashMap<>();
+        result.put("username", principal.getName());
+        return result;
+    }
+
+    @RequestMapping("/logout")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void logout(HttpSession session) {
+        session.invalidate();
     }
 }

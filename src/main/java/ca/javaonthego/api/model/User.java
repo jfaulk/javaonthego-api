@@ -2,6 +2,9 @@ package ca.javaonthego.api.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +18,8 @@ import java.util.Date;
  * Created by james on 2016-02-10.
  */
 @Entity
+@Component
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS, value = "session")
 public class User {
     @Id
     @Getter
