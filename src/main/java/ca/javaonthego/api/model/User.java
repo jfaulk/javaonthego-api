@@ -2,8 +2,6 @@ package ca.javaonthego.api.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Entity;
@@ -19,7 +17,6 @@ import java.util.Date;
  */
 @Entity
 @Component
-@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS, value = "session")
 public class User {
     @Id
     @Getter
@@ -46,21 +43,18 @@ public class User {
     private Integer lastChallenge = 0;
     @Getter
     @Setter
-    private Integer level = 0;
+    private Integer level = 1;
     @Getter
     @Setter
-    private Boolean[] achievements = {true, true, false, false, false};
+    private Boolean[] achievements = {false, false, false, false, false, false, false, false, false, false};
 
     public User() { }
 
     public User(String userName, String email, String password) {
         super();
-        //DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        //Date date = new Date();
         this.userName = userName;
         this.email = email;
         this.password = password;
-        //this.dateCreated = dateFormat.format(date);
         this.dateCreated = creationDate();
     }
 

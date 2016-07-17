@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +17,7 @@ import java.util.Map;
  * User Controller exposes a series of RESTful endpoints
  */
 @RestController
+@CrossOrigin
 public class UserController {
     @Autowired
     private UserRepository userRepository;
@@ -50,7 +49,6 @@ public class UserController {
      *
      * @return the users
      */
-    @CrossOrigin
     @RequestMapping(value = "/api/users", method = RequestMethod.GET)
     public List<User> findAllUsers() {
         return (List<User>) userRepository.findAll();
@@ -61,8 +59,7 @@ public class UserController {
      *
      * @return created user
      */
-    @CrossOrigin
-    @RequestMapping(value = "/api/users", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    @RequestMapping(value = "/api/users", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public User createUser(@RequestBody User user, HttpServletResponse httpResponse, WebRequest request) {
         User createdUser;
@@ -78,7 +75,6 @@ public class UserController {
      *
      * @param userName the user to update
      */
-    @CrossOrigin
     @RequestMapping(value = {"/api/user/{userName}"}, method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public User update(@RequestBody User user, @PathVariable("userName") String userName,
                            HttpServletResponse httpResponse) {
@@ -104,7 +100,7 @@ public class UserController {
             }
 
             if (user.getLevel() != null) {
-                toUpdate.setPassword(user.getPassword());
+                toUpdate.setLevel(user.getLevel());
             }
 
             if (user.getAchievements() != null) {
@@ -123,7 +119,6 @@ public class UserController {
      *
      * @param userId the user id
      */
-    @CrossOrigin
     @RequestMapping(value = "/api/users/{userId}", method = RequestMethod.DELETE)
     public void removeUser(@PathVariable("userId") Long userId, HttpServletResponse httpResponse) {
 
@@ -134,28 +129,33 @@ public class UserController {
         httpResponse.setStatus(HttpStatus.NO_CONTENT.value());
     }
 
-    @CrossOrigin
-    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    @RequestMapping(value = "/api/login", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public boolean checkLogin(@RequestBody User user) {
-        String username = user.getUserName();
-        String password = user.getPassword();
+    public Map checkLogin(@RequestBody User user) {
+        String username;
+        String password;
+
+        if (user.getUserName() == null) {
+            return null;
+        }
+        if (user.getPassword() == null) {
+            return null;
+        }
+
+        username = user.getUserName();
+        password = user.getPassword();
+
+        Map theUser = new HashMap();
+
 
         User toCheck = userRepository.findByUserName(username);
-        return toCheck.getUserName().equals(username) & toCheck.getPassword().equals(password);
-    }
-
-    @CrossOrigin
-    @RequestMapping(value = "/session", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, String> loginUser(Principal principal) {
-        HashMap<String, String> result = new HashMap<>();
-        result.put("username", principal.getName());
-        return result;
-    }
-
-    @RequestMapping("/logout")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void logout(HttpSession session) {
-        session.invalidate();
+        if (toCheck.getUserName().equals(username) & toCheck.getPassword().equals(password)) {
+            theUser.put("userName", username);
+            theUser.put("isValid", true);
+            return theUser;
+        }
+        else {
+            return null;
+        }
     }
 }
